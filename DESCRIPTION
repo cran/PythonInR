@@ -1,0 +1,19 @@
+Package: PythonInR
+Title: Use Python from Within R
+Version: 0.1-0
+Author: Florian Schwendinger [aut, cre]
+Maintainer: Florian Schwendinger <FlorianSchwendinger@gmx.at>
+Description: Interact with Python from within R.
+Depends: R (>= 2.15)
+Imports: pack, methods, R6, stats
+SystemRequirements: Python (>= 2.7.0) with header files and shared
+        library (UNIX) / static library (Windows)
+Note: More information about the system requirements can be found in
+        the README file.
+URL: https://bitbucket.org/Floooo/pythoninr/
+BugReports: https://bitbucket.org/Floooo/pythoninr/issues
+License: GPL-3
+NeedsCompilation: yes
+Packaged: 2015-07-08 22:36:22 UTC; florian
+Repository: CRAN
+Date/Publication: 2015-07-09 14:47:38

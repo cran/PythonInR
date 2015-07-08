@@ -1,0 +1,58 @@
+#!/bin/sh
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# create the makevars for unix like systems (tested on debian and ubuntu)
+#
+# NOTES:
+# The system variable USESPECIALPYTHONVERSION can be used to link to a special
+# python version. 
+# export USESPECIALPYTHONVERSION="python3.4"
+# it can be very usefull especially for testing but one has to ensure  that
+# the file PYVERSION-config is present at the provided location else it will
+# fail.
+# But when using python3 also python3-dev has to be installed 
+# (apt-get install python3-dev)
+# 
+# gcc:
+# there seems to be a new option which doesn't allows me to compile
+# -fstack-protector-strong so I just remove it
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+if ! [ -z "$USESPECIALPYTHONVERSION" ]; then
+    echo "use special version"
+    alias python="$USESPECIALPYTHONVERSION"
+fi 
+
+PYVERSION=`python -c "import sys;import distutils.sysconfig as sc;sys.stdout.write(sc.get_config_var('VERSION'))"`
+PYINCLUDE=`python -c "import sys;import distutils.sysconfig as sc;sys.stdout.write(sc.get_config_var('INCLUDEPY'))"`
+PYBINPATH=`python -c "import sys;import os;sys.stdout.write(os.path.dirname(sys.executable))"`
+# sys.version_info.major would be a alternative to hexversion
+PY3FLAG=`python -c 'import sys; print("%i" % (sys.hexversion<0x03000000))'`
+
+echo $PYVERSION
+echo $PYBINPATH
+echo $PY3FLAG
+echo ""
+
+if [ $PY3FLAG -eq 0 ]; then
+    echo "python version is > 3"
+    PYXY="PYTHONLIBXY=libpython"$PYVERSION"m.so"
+    PYLIBS="PKG_LIBS="`$PYBINPATH/python$PYVERSION-config --ldflags`
+    PYCFLAGS="PKG_CFLAGS="`$PYBINPATH/python$PYVERSION-config --cflags`" -D $PYXY -D PYTHON_IN_R_NO_EXPLICIT_LINKING"
+else 
+    echo "python version is < 3"
+    PYXY="PYTHONLIBXY=libpython"$PYVERSION".so"
+    PYLIBS="PKG_LIBS="`$PYBINPATH/python$PYVERSION-config --ldflags`
+    PYCFLAGS="PKG_CFLAGS="`$PYBINPATH/python$PYVERSION-config --cflags`" -D $PYXY -D PYTHON_IN_R_NO_EXPLICIT_LINKING"
+fi
+
+echo ""
+echo "Makevars:"
+echo $PYLIBS
+echo $PYCFLAGS | sed 's/Wstrict-prototypes/pedantic/' | sed 's/ -fstack-protector-strong//'
+echo ""
+
+# replacing Wstric-prototypes removes some unnecessary warnings
+echo $PYLIBS > src/Makevars
+echo $PYCFLAGS | sed 's/Wstrict-prototypes/pedantic/' | sed 's/ -fstack-protector-strong//' >> src/Makevars	
+
