@@ -8,9 +8,8 @@
 #include "PythonInR.h"
 
 long pyrNamespaceCounter = 0;
-const char *python_version;
-const char *unicode_errors = "replace";
-const char *PythonInR_PyObjectString = "PythonInR_Object";
+// #TODO: ReThink if it would make sense to add Python like options!
+// const char *unicode_errors = "replace"; 
 
 #ifdef DEBUG_PYTHONINR
 static FILE * log_file=NULL;
@@ -180,7 +179,6 @@ SEXP py_initialize(SEXP initsigs){
     logging("py_initialize: Start initialization!");
     static wchar_t *argv3K[1] = {L""};
     static char *argv2K[1] =  {""};
-    //const char *py_platform, *python_version;
     
     Py_InitializeEx(asInteger(initsigs));
     
@@ -192,9 +190,6 @@ SEXP py_initialize(SEXP initsigs){
     PyRun_SimpleString("import sys; sys.path.append('.')");
     
     PYTHON_API_VERSION = py_get_api_version(); // PyModule_Create needs the API_VERSION!
-    //python_version = Py_GetVersion();
-    //py_platform = Py_GetPlatform();
-    //Rprintf("\nInitialize Python Version %s on %s\n", python_version, py_platform);
     
     return R_NilValue; 
 }

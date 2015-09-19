@@ -29,11 +29,25 @@
 #' @details More information about the type conversion can be found in the README 
 #'          file or at \url{http://pythoninr.bitbucket.org/}.
 #' @examples
-#' \dontshow{PythonInR:::pyCranConnect()}
+#' \dontshow{pyCranConnect()}
 #' pySet("x", 3)
 #' pySet("M", diag(1,3))
 #' pyImport("os")
 #' pySet("name", "Hello os!", namespace="os")
+#' ## In some situations it can be beneficial to convert R lists or vectors
+#' ## to Python tuple instead of lists. One way to accomplish that is to change
+#' ## the class of the vector to "tuple".
+#' y <- c(1, 2, 3)
+#' class(y) <- "tuple"
+#' pySet("y", y)
+#' ## pySet can also be used to change values of objects or dictionaries.
+#' asTuple <- function(x) {
+#'  class(x) <- "tuple"
+#'  return(x)
+#' }
+#' pyExec("d = dict()")
+#' pySet("myTuple", asTuple(1:10), namespace="d")
+#' pySet("myList", 1:5, namespace="d")
 #  ---------------------------------------------------------
 pySet <- function(key, value, namespace = "__main__",
                   useSetPoly = TRUE,
@@ -76,28 +90,39 @@ setGeneric("pySetPoly")
 # ----------------------------------------------------------
 # vector
 # ----------------------------------------------------------
-pySetVector <- function(key, value){
-    success <- pySetSimple(key, list(vector=unname(value), names=names(value), rClass=class(value)))    
-    cmd <- sprintf("%s = __R__.PrVector(%s['vector'], %s['names'], %s['rClass'])", 
-                   key, key, key, key)
+pySetVector <- function(key, value, namespace="__main__"){
+    success <- pySetSimple(key, 
+                           list(vector=unname(value), names=names(value), rClass=class(value)),
+                           namespace="__main__")
+    if ( namespace == "__main__" ) {
+      nam1 <- nam2 <- ""
+    } else if ( pyGet(sprintf("isinstance(%s, dict)", namespace)) ) {
+      nam1 <- sprintf("%s['", namespace)
+      nam2 <- "']"
+    } else {
+      nam1 <- sprintf("%s.", namespace)
+      nam2 <- ""
+    }
+    cmd <- sprintf("%s%s%s = __R__.PrVector(%s['vector'], %s['names'], %s['rClass'])", 
+                   nam1, key, nam2, key, key, key)
     pyExec(cmd)
 }
 
 # logical
 setMethod("pySetPoly", signature(key="character", value = "logical"),
-          function(key, value) pySetVector(key, value))
+          function(key, value, namespace) pySetVector(key, value, namespace))
 
 # integer
 setMethod("pySetPoly", signature(key="character", value = "integer"),
-          function(key, value) pySetVector(key, value))
+          function(key, value, namespace) pySetVector(key, value, namespace))
 
 # numeric
 setMethod("pySetPoly", signature(key="character", value = "numeric"),
-          function(key, value) pySetVector(key, value))
+          function(key, value, namespace) pySetVector(key, value, namespace))
 
 # character
 setMethod("pySetPoly", signature(key="character", value = "character"),
-          function(key, value) pySetVector(key, value))
+          function(key, value, namespace) pySetVector(key, value, namespace))
 
 # ----------------------------------------------------------
 # matrix
@@ -105,7 +130,7 @@ setMethod("pySetPoly", signature(key="character", value = "character"),
 # PrMatrix (a pretty reduced matrix class)
 # ========
 setMethod("pySetPoly", signature(key="character", value = "matrix"),
-          function(key, value){
+          function(key, value, namespace){
     rnam <- rownames(value)
     cnam <- colnames(value)
     xdim <- dim(value)
@@ -114,10 +139,19 @@ setMethod("pySetPoly", signature(key="character", value = "matrix"),
     value <- apply(value, 1, function(x) as.list(x))
     value <- list(matrix=value, rownames=rnam, colnames=cnam, dim=xdim)
 
-    success <- PythonInR:::pySetSimple(key, value)
+    success <- pySetSimple(key, value, namespace)
 
-    cmd <- sprintf("%s = __R__.PrMatrix(%s['matrix'], %s['rownames'], %s['colnames'], %s['dim'])", 
-                   key, key, key, key, key)
+    if ( namespace == "__main__" ) {
+        nam1 <- nam2 <- ""
+    } else if ( pyGet(sprintf("isinstance(%s, dict)", namespace)) ) {
+        nam1 <- sprintf("%s['", namespace)
+        nam2 <- "']"
+    } else {
+        nam1 <- sprintf("%s.", namespace)
+        nam2 <- ""
+    }
+    cmd <- sprintf("%s%s%s = __R__.PrMatrix(%s['matrix'], %s['rownames'], %s['colnames'], %s['dim'])", 
+                   nam1, key, nam2, key, key, key, key)
     pyExec(cmd)
 })
 
@@ -125,15 +159,24 @@ setMethod("pySetPoly", signature(key="character", value = "matrix"),
 # =============
 setClass("ndarray")
 setMethod("pySetPoly", signature(key="character", value = "ndarray"),
-          function(key, value){
+          function(key, value, namespace){
     rownames(value) <- NULL
     colnames(value) <- NULL
     value <- apply(value, 1, function(x) as.list(x))
 
-    success <- pySetSimple(key, value)
+    success <- pySetSimple(key, value, namespace)
 
-    cmd <- sprintf("%s = %s.array(%s)",
-                   key, pyOptions("numpyAlias"), key)
+    if ( namespace == "__main__" ) {
+        nam1 <- nam2 <- ""
+    } else if ( pyGet(sprintf("isinstance(%s, dict)", namespace)) ) {
+        nam1 <- sprintf("%s['", namespace)
+        nam2 <- "']"
+    } else {
+        nam1 <- sprintf("%s.", namespace)
+        nam2 <- ""
+    }
+    cmd <- sprintf("%s%s%s = %s.array(%s)",
+                   nam1, key, nam2, pyOptions("numpyAlias"), key)
     pyExec(cmd)
 })
 
@@ -143,17 +186,26 @@ setMethod("pySetPoly", signature(key="character", value = "ndarray"),
 # PrDataFrame
 # ===========
 setMethod("pySetPoly", signature(key="character", value = "data.frame"),
-          function(key, value){
+          function(key, value, namespace){
     rnam <- rownames(value)
     cnam <- colnames(value)
     xdim <- dim(value)
     rownames(value) <- NULL
     value <- list(data.frame=lapply(value, "["), rownames=rnam, colnames=cnam, dim=xdim)
 
-    success <- pySetSimple(key, value)
+    success <- pySetSimple(key, value, namespace)
 
-    cmd <- sprintf("%s = __R__.PrDataFrame(%s['data.frame'], %s['rownames'], %s['colnames'], %s['dim'])", 
-                   key, key, key, key, key)
+    if ( namespace == "__main__" ) {
+        nam1 <- nam2 <- ""
+    } else if ( pyGet(sprintf("isinstance(%s, dict)", namespace)) ) {
+        nam1 <- sprintf("%s['", namespace)
+        nam2 <- "']"
+    } else {
+        nam1 <- sprintf("%s.", namespace)
+        nam2 <- ""
+    }
+    cmd <- sprintf("%s%s%s = __R__.PrDataFrame(%s['data.frame'], %s['rownames'], %s['colnames'], %s['dim'])", 
+                   nam1, key, nam2, key, key, key, key)
     pyExec(cmd)
 })
 
@@ -161,15 +213,24 @@ setMethod("pySetPoly", signature(key="character", value = "data.frame"),
 # ================
 setClass("DataFrame")
 setMethod("pySetPoly", signature(key="character", value = "DataFrame"),
-          function(key, value){
+          function(key, value, namespace){
     rnam <- rownames(value)
     xdim <- dim(value)
     rownames(value) <- NULL
     value <- list(data.frame=lapply(value, "["), rownames=rnam)
 
-    success <- pySetSimple(key, value)
+    success <- pySetSimple(key, value, namespace)
 
-    cmd <- sprintf("%s = %s.DataFrame(%s['data.frame'], index=%s['rownames'])",
-                   key, pyOptions("pandasAlias"), key, key)
+    if ( namespace == "__main__" ) {
+        nam1 <- nam2 <- ""
+    } else if ( pyGet(sprintf("isinstance(%s, dict)", namespace)) ) {
+        nam1 <- sprintf("%s['", namespace)
+        nam2 <- "']"
+    } else {
+        nam1 <- sprintf("%s.", namespace)
+        nam2 <- ""
+    }
+    cmd <- sprintf("%s%s%s = %s.DataFrame(%s['data.frame'], index=%s['rownames'])",
+                   nam1, key, nam2, pyOptions("pandasAlias"), key, key)
     pyExec(cmd)
 })

@@ -42,7 +42,7 @@ pyGet0 <- function(key){
         stop(sprintf('"%s" does not exist', key))
     }
 
-    if ( pyClass %in% c("bool", "int", "long", "float", "str", "bytes", "unicode")){
+    if ( pyClass %in% c("NoneType", "bool", "int", "long", "float", "str", "bytes", "unicode")){
         return(pyGet(key))
     }else if (pyIsCallable(key)){
         return(pyFunction(key))

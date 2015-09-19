@@ -78,10 +78,9 @@ PyObject *py_set_r_object(PyObject *self, PyObject *args){
     PyObject *args_len, *args_i;
     SEXP key;
     char *c_key;
-    int len;
 
     args_len = PyLong_FromSsize_t(PyTuple_GET_SIZE(args));
-    len = PY_TO_C_LONG(args_len);
+    long len = PY_TO_C_LONG(args_len);
     Py_XDECREF(args_len);
 
     if (len != 2) error("py_set_r_object wrong length!\n");

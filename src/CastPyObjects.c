@@ -32,7 +32,7 @@
     py_class 
       transforms python into class objects
       
-      Increases the reference count from py_object +1
+      Increases the reference count from py_object + 1
       
       TODO: The reference counts are consistent with PythonInR_Run_String, 
             double check if it is also consistient with the other use cases!
@@ -574,7 +574,7 @@ SEXP py_tuple_to_r_list(PyObject *py_object, int simplify){
     return r_list;
 }
 
-long py_to_c_integer(PyObject *py_object){
+int py_to_c_integer(PyObject *py_object){
     long c_long;
     if(PyInt_Check(py_object)){
         c_long = PY_TO_C_INTEGER(py_object);
@@ -583,7 +583,7 @@ long py_to_c_integer(PyObject *py_object){
     }else{
         error("in py_to_r_integer!\n");
     }
-    return c_long;
+    return (int)c_long;
 }
 
 const char *py_to_c_string(PyObject *py_object){
@@ -596,58 +596,6 @@ const char *py_to_c_string(PyObject *py_object){
         error("in py_to_c_string!\n");
     }
     return c_string;
-}
-
-/*  ----------------------------------------------------------------------------
-
-    py_to_r_simple 
-      
-
-  ----------------------------------------------------------------------------*/
-SEXP py_to_r_simple(PyObject *py_object){
-    SEXP r_val;
-    if ( PyNone_Check(py_object) ){
-
-        r_val =  R_NilValue;
-
-    }else if( PyBool_Check(py_object) ){
-
-        int c_boolean = PY_TO_C_BOOLEAN(py_object);
-        r_val =  c_to_r_boolean(c_boolean);
-
-    }else if(PyInt_Check(py_object)){
-
-        long c_long = PY_TO_C_INTEGER(py_object);
-        r_val =  c_to_r_integer(c_long);
-
-    }else if(PyLong_Check(py_object)){
-
-        long c_long = PY_TO_C_LONG(py_object);
-        r_val =  c_to_r_integer(c_long);
-
-    }else if(PyFloat_Check(py_object)){
-
-        double c_double = PY_TO_C_DOUBLE(py_object);
-        r_val =  c_to_r_double(c_double);
-
-    }else if(PyString_Check(py_object)){
-        const char *c_string;
-        c_string = PY_TO_C_STRING(py_object);
-        r_val =  c_to_r_string(c_string);
-
-    }else if(PyUnicode_Check(py_object)){
-        const char *c_string;
-        c_string = PY_TO_C_UNICODE(py_object);
-        r_val =  c_to_r_unicode(c_string);
-
-    }else{
-
-        Rprintf("error in py_to_r_simple can't convert this type!\n");
-        r_val = py_class(py_object);
-
-    }
-
-    return r_val;
 }
 
 /*  ----------------------------------------------------------------------------

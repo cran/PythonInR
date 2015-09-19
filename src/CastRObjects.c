@@ -318,7 +318,7 @@ int isPyInR_PyObject(SEXP x){
     if (IS_CHARACTER(cls)){
 		int i = GET_LENGTH(cls) - 2; // -2 da letztes element R6 und von 0 weg
 		if (i >= 0){
-			is_py_in_r_obj = (strncmp(R_TO_C_STRING_V(cls, i), PythonInR_PyObjectString, 8) == 0);
+			is_py_in_r_obj = (strncmp(R_TO_C_STRING_V(cls, i), "PythonInR_Object", 8) == 0);
 		}
     }
     return is_py_in_r_obj;
