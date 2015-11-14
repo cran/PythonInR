@@ -41,6 +41,18 @@ There are no additional dependencies on Windows.
     install_bitbucket("Floooo/PythonInR")
 ```
 
+## Windows Setup
+Since the Windows version of PythonInR uses explicit linkage one can switch
+between different Python versions without recompiling the package. This flexibility
+comes at the price of additional configuration at the startup. Which results in a different 
+behavior for the static (Linux default) and the explicit linked (Windows default) version. 
+Where as the static linked version automatically connects, when the package get’s loaded, 
+the explicitly linked version needs to be connected manually.     
+     
+To enable automatic connection for the explicitly linked version the environment variable
+**PYTHON_EXE** has to be set. You can put your Python path into your ```.Renviron``` or
+```.Rprofile``` file ([Setting up a .Renviron file](https://bitbucket.org/Floooo/pythoninr/wiki/Initialization%20at%20Start%20of%20an%20R%20Session%20on%20Windows)). 
+
 ## NOTES
 ### Python 3
 Due to api changes in Python 3 the function `execfile` is no longer available.
@@ -224,3 +236,24 @@ More information can be found [here](http://www.diveintopython3.net/strings.html
 | pyTuple          | Create a representation of a Python tuple in R     | `pyTuple(key)`                                                       |
 | pyType           | Get the type of a Python variable                  | `pyType("sys")`                                                      |
 | pyVersion        | Returns the version of Python                      | `pyVersion()`                                                        |
+
+
+# Usage Examples
+## Dynamic Documents
+  + **PythonInR and KnitR** [Example](https://gist.github.com/kohske/3e438a7962cacfef9d32)
+## Data and Text Mining
+  + **PythonInR and word2vec** [Example](https://speakerdeck.com/yamano357/tokyor51-lt)  
+    The word2vec tool takes a text corpus as input and produces the word vectors as output. More information can be found [here](https://code.google.com/p/word2vec/).  
+    [T Mikolov, K Chen, G Corrado, J Dean . "Efficient estimation of word representations in vector space." arXiv preprint arXiv:1301.3781 (2013).](http://arxiv.org/pdf/1301.3781.pdf)  
+    For word2vec also R-packages are available [tmcn (A Text mining toolkit especially for Chinese)](https://r-forge.r-project.org/R/?group_id=1571) and [wordVectors](https://github.com/bmschmidt/wordVectors). An example application of *wordVectors* can be found [here](http://yamano357.hatenadiary.com/entry/2015/11/04/000332).
+    Furthermore it seems to be soon available in [h2o-3](https://github.com/h2oai/h2o-3/blob/master/h2o-r/h2o-package/R/word2vec.R).
+      
+
+  + **PythonInR and Glove** [Example](https://gist.github.com/yamano357/8a31b2dc0c7a20a30d36)  
+    GloVe is an unsupervised learning algorithm for obtaining vector representations for words. More information can be found [here](http://nlp.stanford.edu/projects/glove/).   
+    [Jeffrey Pennington, Richard Socher, and Christopher D. Manning. "Glove: Global vectors for word representation." Proceedings of the Empiricial Methods in Natural Language Processing (EMNLP 2014) 12 (2014): 1532-1543.](http://nlp.stanford.edu/pubs/glove.pdf)
+      
+      
+  + **PythonInR and TensorFlow** [Example](http://qiita.com/yamano357/items/66272759fc29a5a2dd01)  
+    TensorFlow is an open source software library for numerical computation using data flow graphs. More information can be found [here](http://www.tensorflow.org/).  
+    [Martín Abadi, Ashish Agarwal, Paul Barham, Eugene Brevdo, Zhifeng Chen, Craig Citro, Greg S. Corrado, Andy Davis, Jeffrey Dean, Matthieu Devin, Sanjay Ghemawat, Ian Goodfellow, Andrew Harp, Geoffrey Irving, Michael Isard, Rafal Jozefowicz, Yangqing Jia, Lukasz Kaiser, Manjunath Kudlur, Josh Levenberg, Dan Mané, Mike Schuster, Rajat Monga, Sherry Moore, Derek Murray, Chris Olah, Jonathon Shlens, Benoit Steiner, Ilya Sutskever, Kunal Talwar, Paul Tucker, Vincent Vanhoucke, Vijay Vasudevan, Fernanda Viégas, Oriol Vinyals, Pete Warden, Martin Wattenberg, Martin Wicke, Yuan Yu, and Xiaoqiang Zheng. "TensorFlow: Large-scale machine learning on heterogeneous systems." (2015).](http://download.tensorflow.org/paper/whitepaper2015.pdf)

@@ -29,13 +29,13 @@
 #' @details More information about the type conversion can be found in the README 
 #'          file or at \url{http://pythoninr.bitbucket.org/}.
 #' @examples
-#' \dontshow{pyCranConnect()}
+#' \dontshow{PythonInR:::pyCranConnect()}
 #' pySet("x", 3)
 #' pySet("M", diag(1,3))
 #' pyImport("os")
 #' pySet("name", "Hello os!", namespace="os")
 #' ## In some situations it can be beneficial to convert R lists or vectors
-#' ## to Python tuple instead of lists. One way to accomplish that is to change
+#' ## to Python tuple instead of lists. One way to accomplish this is to change
 #' ## the class of the vector to "tuple".
 #' y <- c(1, 2, 3)
 #' class(y) <- "tuple"
@@ -47,7 +47,7 @@
 #' }
 #' pyExec("d = dict()")
 #' pySet("myTuple", asTuple(1:10), namespace="d")
-#' pySet("myList", 1:5, namespace="d")
+#' pySet("myList", as.list(1:5), namespace="d")
 #  ---------------------------------------------------------
 pySet <- function(key, value, namespace = "__main__",
                   useSetPoly = TRUE,
@@ -57,9 +57,9 @@ pySet <- function(key, value, namespace = "__main__",
     if ( pyConnectionCheck() ) return(invisible(NULL))
     check_string(key)
 
-    if (useNumpy & (class(value) == "matrix")){
+    if (all(useNumpy) & all(class(value) == "matrix")){
         class(value) <- "ndarray"
-    }else if (usePandas & (class(value) == "data.frame")){
+    }else if (all(usePandas) & all(class(value) == "data.frame")){
         class(value) <- "DataFrame"
     }
     

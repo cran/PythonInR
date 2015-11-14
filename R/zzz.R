@@ -3,6 +3,8 @@
   # be accessed by using the function isDllVersion 
   if ( !.Call( "isDllVersion") ){
       pyConnect()
+  } else if ( nchar(Sys.getenv('PYTHON_EXE')) > 0 ) {
+  	  pyConnect(pythonExePath=Sys.getenv('PYTHON_EXE'))
   }
   
   invisible(NULL)

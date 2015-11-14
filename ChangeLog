@@ -1,0 +1,11 @@
+2015-11-13  Florian Schwendinger  <FlorianSchwendinger@gmx.at>
+
+    * DESCRIPTION (Version): New version is 0.1-2.
+
+    * R/pySource.R (BEGIN.Python): Improved, now also for, if, ... possible.
+
+    * R/zzz.R (.onLoad): added the possibility for auto load for Windows as
+	Suggested by Johannes Ranke.
+
+    * added documentation and links to use cases
+

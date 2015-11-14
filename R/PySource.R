@@ -64,6 +64,8 @@ pySource <- function(file, local = FALSE, echo = verbose, print.eval = echo,
 #'          from within R.
 #' @return Returns the entered code as character, code lines which throw an
 #'         exception are omitted.
+#' @note This won't work with RStudio because of a known  
+#' \href{https://support.rstudio.com/hc/communities/public/questions/206744317-readLines-Bug-?page=1#answer-206647788}{RStudio issue}.
 #' @examples
 #' \dontshow{PythonInR:::pyCranConnect()}
 #' \dontrun{
@@ -73,26 +75,48 @@ pySource <- function(file, local = FALSE, echo = verbose, print.eval = echo,
 #' os.getcwd()
 #' dir(os)
 #' x = 3**3
+#' for i in xrange(10):
+#'     if (i > 5):
+#'         print(i)
+#'
 #' END.Python
 #' ## NOTE: BEGIN.Python returns the successfully executed code as character.
-#' cat(code)
+#' cat(code, sep="\n")
 #' pyGet0("x")
 #' }
 #  -----------------------------------------------------------
 BEGIN.Python <- function(){
-  pyCode <- character()
-  while(TRUE) {
-    line <- readline(prompt="py> ")
-    if (grepl("END.Python", line, fixed=TRUE)){
-      break
-    } 
-    tryCatch({pyExecp(line)
-      pyCode <- c(pyCode, line)
-    },
-    warning=function(w){ print(w) },
-    error=function(e){ print(e) }
-    )
-  }
-  return(invisible(pyCode))
+    if ( pyConnectionCheck() ) return(invisible(NULL))
+    f <- file("stdin")
+    open(f)
+    cat("py> ")
+    pyCode <- character()
+    execBuffer <- ""
+    while(TRUE) {
+        line <- readLines(f,n=1)
+        if (grepl("END.Python", line, fixed=TRUE)) {
+            if ( nchar(execBuffer) > 0 ) pyExec(execBuffer)
+            break
+        }
+        if (grepl("(^\\s|:\\s*$)", line)) {
+            execBuffer <- paste(c(execBuffer, line), collapse="\n")
+        } else {
+            if ( nchar(execBuffer) > 0 ) {
+                pyExec(execBuffer)
+                cat("py> ")
+            }
+            if ( nchar(line) > 0 ) {
+            	tryCatch({
+            		pyExecp(line)
+                	pyCode <- c(pyCode, line)
+                  	},
+                 	warning=function(w){ print(w) },
+                 	error=function(e){ print(e) }
+                 	)
+            	cat("py> ")
+        	}
+        }
+    }
+    return(invisible(pyCode))
 }
 

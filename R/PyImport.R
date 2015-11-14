@@ -26,9 +26,9 @@
 #' #      The same is done for pandas, the default alias for pandas and numpy 
 #' #      are respectively "pandas" and "numpy". The numpyAlias is used 
 #' #      when calling pySet with the pyOption useNumpy set to TRUE.
-#' pyOptions(numpyAlias)
+#' pyOptions("numpyAlias")
 #' pyImport("numpy", as="np")
-#' pyOptions(numpyAlias)
+#' pyOptions("numpyAlias")
 #' pyImport("pandas", as="pd")
 #' pyImport(c("getcwd", "sep"), from="os")
 #' getcwd()
