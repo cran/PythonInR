@@ -1,11 +1,12 @@
-#ifdef PYTHON_IN_R_NO_EXPLICIT_LINKING
-int ISO_C_forbids_an_empty_translation_unit;
-#else
-#ifndef PYTHON_EXPLICIT_LINKING
+//#ifdef PYTHON_IN_R_NO_EXPLICIT_LINKING
+//#define ISO_C_forbids_an_empty_translation_unit_PYTHON_EXPLICIT_LINKING
+//#else
+//#ifndef PYTHON_EXPLICIT_LINKING
+#if ( (!defined(PYTHON_IN_R_NO_EXPLICIT_LINKING)) & (!defined(PYTHON_EXPLICIT_LINKING)) )
 #define PYTHON_EXPLICIT_LINKING
 
-int PYTHON_API_VERSION; /* Start with the number of Python 2.79 (could be anyone) */
-int PYTHON_MAJOR_VERSION; /* Could get a bug one day ;) */
+int PYTHON_API_VERSION;
+int PYTHON_MAJOR_VERSION;
 
 #define PY_MAJOR_VERSION 9999
 
@@ -525,5 +526,5 @@ typedef PyObject * (__cdecl *R_PyObject_CallFunction) (PyObject *, char *, ...);
 int get_proc_addresses(HMODULE);
 
 #endif
-#endif
+//#endif
 

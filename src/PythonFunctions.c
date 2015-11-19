@@ -1,6 +1,6 @@
 #ifndef PYTHON_IN_R_FUNCTIONS
 #define PYTHON_IN_R_FUNCTIONS
-int ISO_C_forbids_an_empty_translation_unit;
+int ISO_C_forbids_an_empty_translation_unit_PythonFunctions = 0;
 #if ( defined(PY_EXPERIMENTAL) && defined(PYTHON_IN_R_NO_EXPLICIT_LINKING) )
 #include "PythonFunctions.h"
 

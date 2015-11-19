@@ -9,3 +9,6 @@ expect_that(names(pyOptions()),
 expect_that(pyOptions("numpyAlias"), equals("numpy"))
 expect_that(pyOptions("numpyAlias", "np"), equals("np"))
 expect_that(pyOptions("numpyAlias"), equals("np"))
+expect_that(pyOptions("numpyAlias", "numpy"), equals("numpy"))
+
+

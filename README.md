@@ -1,6 +1,6 @@
 # PythonInR - Makes accessing Python from within R as easy as pie.
 
-More documenation can be found at [http://pythoninr.bitbucket.org/](http://pythoninr.bitbucket.org/).
+More documenation can be found at [https://bitbucket.org/Floooo/pythoninr](https://bitbucket.org/Floooo/pythoninr) and [http://pythoninr.bitbucket.org/](http://pythoninr.bitbucket.org/).
 
 ## Dependencies
 
@@ -144,7 +144,8 @@ Data frames are either transformed to an object of the class PrDataFrame
 or to a pandas DataFrame (if the option usePandas is set to TRUE).
 
 
-### R to Python (pyGet)
+### R to Python (pyGet)  
+
 | Python      | R                    | simplify     |
 | ----------- | -------------------- | ------------ |
 | None        | NULL                 | TRUE / FALSE |
@@ -206,15 +207,15 @@ In short, in Python 3 the data type string was replaced by the data type bytes.
 More information can be found [here](http://www.diveintopython3.net/strings.html).
 
 
-## Cheat Sheet
+## Cheat Sheet  
 
 | Command          | Short Description                                  | Example Usage                                                        |
 | ---------------- | -------------------------------------------------- | -------------------------------------------------------------------- |
-| BEGIN.Python     | Start a Python read-eval-print loop                | `BEGIN.Python() print("Hello" + " " + "R!") END.Python`              |
-| pyAttach         | Attach a Python object to an R environment         | `pyAttach("os.getcwd", .GlobalEnv)                                   |
+| BEGIN.Python     | Start a Python read\-eval\-print loop              | `BEGIN.Python() print("Hello" + " " + "R!") END.Python`              |
+| pyAttach         | Attach a Python object to an R environment         | `pyAttach("os.getcwd", .GlobalEnv)`                                  |
 | pyCall           | Call a callable Python object                      | `pyCall("pow", list(2,3), namespace="math")`                         |
 | pyConnect        | Connect R to Python                                | `pyConnect()`                                                        |
-| pyDict           | Create a representation of a Python dict in R      | `myNewDict <- pyDict('myNewDict', list(p=2, y=9, r=1))`              |
+| pyDict           | Create a representation of a Python dict in R      | `myNewDict = pyDict('myNewDict', list(p=2, y=9, r=1))`               |
 | pyDir            | The Python function dir (similar to ls)            | `pyDir()`                                                            |
 | pyExec           | Execute Python code                                | `pyExec('some_python_code = "executed"')`                            |
 | pyExecfile       | Execute a file (like source)                       | `pyExecfile("myPythonFile.py")`                                      |
@@ -223,7 +224,7 @@ More information can be found [here](http://www.diveintopython3.net/strings.html
 | pyExit           | Close Python                                       | `pyExit()`                                                           |
 | pyFunction       | Create a representation of a Python function in R  | `pyFunction(key)`                                                    |
 | pyGet            | Get a Python variable                              | `pyGet('myPythonVariable')`                                          |
-| pyGet0           | Get a Python variable                              | `pyGet('myPythonVariable')`                                          |
+| pyGet0           | Get a Python variable                              | `pyGet0('myPythonVariable')`                                         |
 | pyHelp           | Python help                                        | `pyHelp("help")`                                                     |
 | pyImport         | Import a Python module                             | `pyImport("numpy", "np")`                                            |
 | pyIsConnected    | Check if R is connected to Python                  | `pyIsConnected()`                                                    |
@@ -238,10 +239,11 @@ More information can be found [here](http://www.diveintopython3.net/strings.html
 | pyVersion        | Returns the version of Python                      | `pyVersion()`                                                        |
 
 
-# Usage Examples
+# Usage Examples   
 ## Dynamic Documents
-  + **PythonInR and KnitR** [Example](https://gist.github.com/kohske/3e438a7962cacfef9d32)
-## Data and Text Mining
+  + **PythonInR and KnitR** [Example](https://gist.github.com/kohske/3e438a7962cacfef9d32)   
+
+## Data and Text Mining   
   + **PythonInR and word2vec** [Example](https://speakerdeck.com/yamano357/tokyor51-lt)  
     The word2vec tool takes a text corpus as input and produces the word vectors as output. More information can be found [here](https://code.google.com/p/word2vec/).  
     [T Mikolov, K Chen, G Corrado, J Dean . "Efficient estimation of word representations in vector space." arXiv preprint arXiv:1301.3781 (2013).](http://arxiv.org/pdf/1301.3781.pdf)  

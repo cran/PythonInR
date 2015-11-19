@@ -65,7 +65,7 @@ expect_that(pyExecg("x=fun()")[['x']], equals("Hello R!"))
 #' #### returnToR
 expect_that(pyExecg("x=4", returnToR=FALSE)[['x']], equals(NULL))
 #' #### mergeNamespaces 
-expect_that(pyExecg("some_new_variable=4", mergeNamespaces=TRUE)[[1]], equals(4))
+expect_that(pyExecg("some_new_variable=4", mergeNamespaces=TRUE, override = TRUE)[[1]], equals(4))
 expect_that(pyPrint("some_new_variable"), prints_text("4"))
 #' #### override
 expect_that(pyExecg("some_new_variable=1", mergeNamespaces=TRUE, override=FALSE)[[1]], equals(1))
@@ -130,3 +130,4 @@ expect_that(pyGet("myString"), equals(myString))
 expect_that(pyGet("myUnicode"), equals(myUnicode))
 expect_that(pyGet("myList"), equals(myList))
 expect_that(pyGet("myTuple"), equals(myTuple))
+
