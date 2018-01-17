@@ -28,11 +28,13 @@ PYINCLUDE=`python -c "import sys;import distutils.sysconfig as sc;sys.stdout.wri
 PYBINPATH=`python -c "import sys;import os;sys.stdout.write(os.path.dirname(sys.executable))"`
 # sys.version_info.major would be a alternative to hexversion
 PY3FLAG=`python -c 'import sys; print("%i" % (sys.hexversion<0x03000000))'`
+PICFLAGS=`"${R_HOME}/bin/R" CMD config CXX11PICFLAGS`
 
-echo $PYVERSION
-echo $PYBINPATH
-echo $PY3FLAG
-echo ""
+## echo $PYVERSION
+## echo $PYBINPATH
+## echo $PY3FLAG
+## echo $PICFLAGS
+## echo ""
 
 if [ $PY3FLAG -eq 0 ]; then
     echo "python version is > 3"
@@ -46,13 +48,17 @@ else
     PYCFLAGS="PKG_CFLAGS="`$PYBINPATH/python$PYVERSION-config --cflags`" -D $PYXY -D PYTHON_IN_R_NO_EXPLICIT_LINKING"
 fi
 
-echo ""
-echo "Makevars:"
-echo $PYLIBS
-echo $PYCFLAGS | sed 's/Wstrict-prototypes/pedantic/' | sed 's/ -fstack-protector-strong//'
-echo ""
+## echo ""
+## echo "Makevars:"
+## echo $PYLIBS
+## echo $PYCFLAGS | sed 's/Wstrict-prototypes/pedantic/' | sed 's/ -fstack-protector-strong//'
+## echo ""
 
 # replacing Wstric-prototypes removes some unnecessary warnings
 echo $PYLIBS > src/Makevars
-echo $PYCFLAGS | sed 's/Wstrict-prototypes/pedantic/' | sed 's/ -fstack-protector-strong//' >> src/Makevars	
+if [ -z "$PICFLAGS" ]; then
+	echo $PYCFLAGS | sed 's/Wstrict-prototypes/pedantic/' | sed 's/ -fstack-protector-strong//' | sed 's/ -Wdate-time//' | sed 's/ -Werror=format-security//' | sed 's/ -Wformat//' >> src/Makevars	
+else 
+	echo $PYCFLAGS | sed 's/Wstrict-prototypes/pedantic/' | sed 's/ -fstack-protector-strong//' | sed 's/ -Wdate-time//' | sed 's/ -Werror=format-security//' | sed 's/ -Wformat//' | sed 's/ -fpic//' >> src/Makevars	
+fi
 

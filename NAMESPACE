@@ -1,4 +1,4 @@
-useDynLib(PythonInR)
+useDynLib(PythonInR, .registration = TRUE)
 importFrom(stats, setNames)
 importFrom("pack", unpack)
 import(methods)
@@ -21,6 +21,7 @@ S3method("[<-", "PythonInR_Dict")
 export(autodetectPython,
        pyAttach,
        pyConnect,
+       pyConnectWinDll,
        pyIsConnected,
        pyVersion,
        pyExit,

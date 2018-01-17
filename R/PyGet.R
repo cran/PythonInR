@@ -45,7 +45,7 @@ pyGet0 <- function(key){
     if ( pyClass %in% c("NoneType", "bool", "int", "long", "float", "str", "bytes", "unicode")){
         return(pyGet(key))
     }else if (pyIsCallable(key)){
-        return(pyFunction(key))
+        return(pyFunction(key, regFinalizer = FALSE))
     }else if ( pyClass == "tuple" ){
         return(pyTuple(key, regFinalizer = FALSE))
     }else if ( pyClass == "list" ){

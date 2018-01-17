@@ -33,16 +33,22 @@
 pyOptions <-
 local({
     options <- list(numpyAlias="numpy", useNumpy=FALSE, pandasAlias="pandas",
-                    usePandas=FALSE, winPython364=FALSE)
+                    usePandas=FALSE, winPython364=FALSE, intToLong=TRUE)
     function(option, value) {
         if (missing(option)) return(options)
         if (missing(value)){
-            options[[option]]
+            if (option == "intToLong") return(as.logical(.Call( "get_int_long_flag" )))
+            return(options[[option]])
         }else{
+            sol <- NULL
             if ( class(value) != class(options[[option]]) ){
                 stop(sprintf('"%s" has to be "%s"', option, class(options[[option]])))
             }
+            if (option == "intToLong") {
+                sol <- .Call( "set_int_long_flag", as.integer(value) )
+            }
             options[[option]] <<- value
+            return(invisible(sol))
         }
     }
 })

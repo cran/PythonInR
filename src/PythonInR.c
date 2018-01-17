@@ -10,6 +10,7 @@
 long pyrNamespaceCounter = 0;
 // #TODO: ReThink if it would make sense to add Python like options!
 // const char *unicode_errors = "replace"; 
+int r_int_to_py_long_flag = 1;
 
 #ifdef DEBUG_PYTHONINR
 static FILE * log_file=NULL;
@@ -65,7 +66,7 @@ static PyObject* PyInit_logCatcher(void){
     py_connect
       py_connect creates a connection to Python
   ----------------------------------------------------------------------------*/
-SEXP py_connect(SEXP initsigs){
+SEXP py_connect(SEXP initvars){
     #if PY_MAJOR_VERSION >= 3
         static wchar_t *argv[1] = {L""};
         PyImport_AppendInittab("logCatcher", &PyInit_logCatcher);
@@ -82,7 +83,7 @@ SEXP py_connect(SEXP initsigs){
         dlopen( xstr(PYTHONLIBXY), RTLD_NOW | RTLD_GLOBAL ); // NOTE: use RTLD_NOW for debugging RTLD_LAZY else
     #endif
     
-    Py_InitializeEx(asInteger(initsigs));
+    Py_InitializeEx(asInteger(initvars));
     PySys_SetArgv(1, argv);
     Py_SetProgramName(PY_V_CHAR("PythonInR")); 
     
@@ -131,6 +132,38 @@ SEXP py_is_connected(void){
     return c_to_r_integer(Py_IsInitialized());
 }
 
+
+//
+// dummy functions 
+//
+SEXP py_get_process_addresses(void){
+    return R_NilValue;
+}
+
+SEXP py_import_append_logCatcher(void) {
+    return R_NilValue;
+}
+
+SEXP py_init_py_values(void) {
+    return R_NilValue;
+}
+
+SEXP py_init_redirect_stderrout(void) {
+    return R_NilValue;
+}
+
+SEXP py_initialize(SEXP initsigs) {
+    return R_NilValue;
+}
+
+SEXP py_set_major_version(SEXP pythonMajorVersion) {
+    return R_NilValue;
+}
+
+SEXP py_set_program_name(SEXP programName) {
+    return R_NilValue;
+}
+
 #else
 
 /*  ----------------------------------------------------------------------------
@@ -143,7 +176,11 @@ SEXP py_set_major_version(SEXP pythonMajorVersion){
     return R_NilValue;
 }
 
-SEXP py_connect(SEXP dllName, SEXP dllDir, SEXP alteredSearchPath){
+SEXP py_connect(SEXP initvars){   
+    SEXP dllName = VECTOR_ELT(initvars, 0);
+    SEXP dllDir = VECTOR_ELT(initvars, 1);
+    SEXP alteredSearchPath = VECTOR_ELT(initvars, 2);
+
     #ifdef DEBUG_PYTHONINR
         log_file=fopen("PythonInR.log","w");
     #endif
@@ -211,7 +248,7 @@ int py_get_api_version(void){
     return api_version;
 }
 
-SEXP py_import_append_logCatcher(void){
+SEXP py_import_append_logCatcher(void) {
     if(PYTHON_MAJOR_VERSION >= 3){
         PyImport_AppendInittab3K("logCatcher", &PyInit_logCatcher);
         return(c_to_r_integer(0));
@@ -335,3 +372,13 @@ SEXP py_get_info(void){
     UNPROTECT(1);
     return info;
 }
+
+SEXP get_int_long_flag(void) {
+    return c_to_r_integer(r_int_to_py_long_flag);
+}
+
+SEXP set_int_long_flag(SEXP flag){
+	r_int_to_py_long_flag = R_TO_C_INT(flag);
+	return R_NilValue;
+}
+

@@ -1,5 +1,5 @@
 q("no")
-R
+Rdevel
 
 library(testthat)
 require(PythonInR)
@@ -17,11 +17,12 @@ fpath <- file.path(path.package("PythonInR"), "testing")
 
 pyOptions()
 
-for (i in 1:2){    
-    for (i in test_this){
+for (j in 1:100) {
+    for (i in test_this) {
         cat(i, "\n")
         fname <- file.path(fpath, i)
         test_file(fname)
+        ## source(i)
         cat("\n\n")
     }    
 }
@@ -32,4 +33,6 @@ pyExec("print('Hallo R')")
 pyExecp("'Hallo R'")
 
 traceback()
+
+source("PyExec.R")
 

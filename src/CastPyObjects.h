@@ -1,8 +1,8 @@
 /* --------------------------------------------------------------------------  \
+ 
+ GetPyObjects
 
-    GetPyObjects
-
-    Provides function to get Python objects from various name spaces.
+Provides function to get Python objects from various name spaces.
 
 \  -------------------------------------------------------------------------- */
 
@@ -15,9 +15,7 @@ SEXP py_class(PyObject *py_object);
 
 int Py_GetR_Type(PyObject *py_object);
 
-int PyList_AllSameType(PyObject *py_object);
-
-int PyTuple_AllSameType(PyObject *py_object);
+int PyCollection_AllSameType(PyObject *py_object, int collection_type);
 
 int PyDict_AllSameType(PyObject *py_object);
 

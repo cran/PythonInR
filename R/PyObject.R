@@ -6,7 +6,11 @@
 ## -----------------------------------------------------------------------------
 
 pyObjectFinalize <- function(self){
-    pyExec(sprintf("del(%s)", self$py.variableName))
+    pyExec(pyTry(sprintf("del(%s)", self$py.variableName)))
+}
+
+pyTry <- function(x) {
+    sprintf('try: %s \nexcept: pass', x)
 }
 
 callFun <- '
@@ -189,6 +193,8 @@ PythonInR_ObjectNoFinalizer <-
 #' @description The function pyFunction creates a new object of type 
 #'              pyFunction based on a given key.
 #' @param key a string specifying the name of a Python method/function.
+#' @param regFinalizer a logical indicating if a finalizer should be
+#'                     be registered, the default value is FALSE.    
 #' @details The function pyFunction makes it easy to create interfaces 
 #'          to Python functions.
 #' @examples
@@ -198,12 +204,16 @@ PythonInR_ObjectNoFinalizer <-
 #' pySum(1:3)
 #' }
 #  ---------------------------------------------------------
-pyFunction <- function(key){
+pyFunction <- function(key, regFinalizer = FALSE){
     if ( pyConnectionCheck() ) return(invisible(NULL))
     cfun <- sprintf(callFun, key)
     fun <- eval(parse(text=cfun))
     class(fun) <- "pyFunction"
     attr(fun, "name") <- key
+    if ( regFinalizer ) {
+        funenv <- new.env(parent = emptyenv())
+        reg.finalizer(funenv, function(x) pyExec(pyTry(sprintf("del(%s)", key))))
+    }
     fun
 }
 

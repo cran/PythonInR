@@ -9,6 +9,7 @@
 #define PY_INSIDE_R_H
 
 extern long pyrNamespaceCounter;
+extern int r_int_to_py_long_flag;
 
 #ifdef PYTHON_IN_R_NO_EXPLICIT_LINKING
 #include <Python.h> // If you are a Linux user, did you realy install the Python headers? Try "sudo apt-get install python-dev" to fix this! :)
@@ -34,9 +35,9 @@ extern long pyrNamespaceCounter;
 #include <stdio.h>
 #include <errno.h>
 //static FILE * log_file;
-#define logging(M, ...) fprintf(log_file, "[INFO] (%s:%d) " M "\n", __FILE__, __LINE__, ##__VA_ARGS__); fflush(log_file); 
+#define logging(...) fprintf(log_file, "[INFO] (%s:%d) %s \n", __FILE__, __LINE__, ##__VA_ARGS__); fflush(log_file); 
 #else
-#define logging(M, ...)
+#define logging(...)
 #endif
 
 #ifndef PYTHON_IN_R_NO_EXPLICIT_LINKING
@@ -54,10 +55,8 @@ HMODULE py_hdll;
 PyObject* log_write(PyObject*, PyObject*);
 PyObject* log_flush(PyObject*, PyObject*);
 
-#ifdef PYTHON_IN_R_NO_EXPLICIT_LINKING
+#ifndef PYTHON_IN_R_NO_EXPLICIT_LINKING
 SEXP py_connect(SEXP);
-#else
-SEXP py_connect(SEXP, SEXP, SEXP);
 
 SEXP py_set_major_version(SEXP);
 

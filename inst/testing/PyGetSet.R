@@ -115,7 +115,7 @@ x <- list(A=genVal(1),
          )
 for (i in 1:length(x)){
     pySet(sprintf("r%i", i), x[[i]])
-    expect_that(pyGet(sprintf("r%i", i), simplify=FALSE), is_identical_to(x[[i]]))
+    expect_that(pyGet(sprintf("r%i", i), simplify=FALSE), equals(x[[i]]))
 }
 
 #' ### nested lists with names
@@ -134,7 +134,7 @@ x <- matrix(1:8, 4, 2)
 rownames(x) <- paste0("row", (1:dim(x)[1]))
 colnames(x) <- paste0("col", (1:dim(x)[2]))
 expect_that(pySet("r", x), equals(0))
-expect_that(pyGet("r"), is_identical_to(x))
+expect_that(pyGet("r"), equals(x))
 M <- as.matrix(cars)
 rownames(M) <- paste0("row", (1:dim(M)[1]))
 expect_that(pySet("rmatrix", M), equals(0))

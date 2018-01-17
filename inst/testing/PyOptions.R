@@ -5,10 +5,9 @@ invisible(capture.output(pyConnect()))
 
 ## Options
 expect_that(names(pyOptions()), 
-	equals(c("numpyAlias", "useNumpy", "pandasAlias", "usePandas", "winPython364")))
+	equals(c("numpyAlias", "useNumpy", "pandasAlias", "usePandas", "winPython364", "intToLong")))
 expect_that(pyOptions("numpyAlias"), equals("numpy"))
-expect_that(pyOptions("numpyAlias", "np"), equals("np"))
+pyOptions("numpyAlias", "np")
 expect_that(pyOptions("numpyAlias"), equals("np"))
-expect_that(pyOptions("numpyAlias", "numpy"), equals("numpy"))
-
+pyOptions("numpyAlias", "numpy")
 

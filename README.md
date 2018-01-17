@@ -1,6 +1,6 @@
-# PythonInR - Makes accessing Python from within R as easy as pie.
+# PythonInR
 
-More documenation can be found at [https://bitbucket.org/Floooo/pythoninr](https://bitbucket.org/Floooo/pythoninr) and [http://pythoninr.bitbucket.org/](http://pythoninr.bitbucket.org/).
+More documenation can be found at [https://bitbucket.org/Floooo/pythoninr](https://bitbucket.org/Floooo/pythoninr).
 
 ## Dependencies
 
@@ -51,7 +51,7 @@ the explicitly linked version needs to be connected manually.
      
 To enable automatic connection for the explicitly linked version the environment variable
 **PYTHON_EXE** has to be set. You can put your Python path into your ```.Renviron``` or
-```.Rprofile``` file ([Setting up a .Renviron file](https://bitbucket.org/Floooo/pythoninr/wiki/Initialization%20at%20Start%20of%20an%20R%20Session%20on%20Windows)). 
+```.Rprofile``` file ([Setting up a .Renviron file](https://github.com/FlorianSchwendinger/PythonInR/wiki)). 
 
 ## NOTES
 ### Python 3
@@ -246,7 +246,7 @@ More information can be found [here](http://www.diveintopython3.net/strings.html
 ## Data and Text Mining   
   + **PythonInR and word2vec** [Example](https://speakerdeck.com/yamano357/tokyor51-lt)  
     The word2vec tool takes a text corpus as input and produces the word vectors as output. More information can be found [here](https://code.google.com/p/word2vec/).  
-    [T Mikolov, K Chen, G Corrado, J Dean . "Efficient estimation of word representations in vector space." arXiv preprint arXiv:1301.3781 (2013).](http://arxiv.org/pdf/1301.3781.pdf)  
+    [T Mikolov, K Chen, G Corrado, J Dean . "Efficient estimation of word representations in vector space." arXiv preprint arXiv:1301.3781 (2013).](https://arxiv.org/pdf/1301.3781.pdf)  
     For word2vec also R-packages are available [tmcn (A Text mining toolkit especially for Chinese)](https://r-forge.r-project.org/R/?group_id=1571) and [wordVectors](https://github.com/bmschmidt/wordVectors). An example application of *wordVectors* can be found [here](http://yamano357.hatenadiary.com/entry/2015/11/04/000332).
     Furthermore it seems to be soon available in [h2o-3](https://github.com/h2oai/h2o-3/blob/master/h2o-r/h2o-package/R/word2vec.R).
       

@@ -51,7 +51,6 @@ pyExec('
 def fun():
     return("Hello R!")
 ')
-expect_that(pyExec("fun()"), prints_text("^([A-Z]+)?$", perl = TRUE))
 expect_that(pyExecp("fun()"), prints_text("Hello R"))
 
 #' ## Test pyExecg

@@ -457,15 +457,26 @@ typedef PyObject * (__cdecl *R_PyObject_CallFunction) (PyObject *, char *, ...);
 
 #define PyNone_Check(o) (o == R_PyNone)
 #define PyBool_Check(o) ((o == R_PyFALSE) | (o == R_PyTRUE))
+// These are implemented like the PyXXX_CheckExact
 #define PyInt_Check(o)  (Py_TYPE(o) == Py_TYPE(R_PyInt))
 #define PyLong_Check(o)  (Py_TYPE(o) == Py_TYPE(R_PyLong))
 #define PyFloat_Check(o) (Py_TYPE(o) == Py_TYPE(R_PyFloat))
-// These are implemented like the PyXXX_CheckExact
 #define PyString_Check(o) (Py_TYPE(o) == Py_TYPE(R_PyString))
 #define PyUnicode_Check(o) (Py_TYPE(o) == Py_TYPE(R_PyUnicode))
 #define PyTuple_Check(o) (Py_TYPE(o) == Py_TYPE(R_PyTuple))
 #define PyList_Check(o) (Py_TYPE(o) == Py_TYPE(R_PyList))
 #define PyDict_Check(o) (Py_TYPE(o) == Py_TYPE(R_PyDict))
+
+// These are implemented like the PyXXX_CheckExact
+#define PyInt_CheckExact(o)     PyInt_Check(o)
+#define PyLong_CheckExact(o)    PyLong_Check(o)
+#define PyFloat_CheckExact(o)   PyFloat_Check(o)
+#define PyString_CheckExact(o)  PyString_Check(o)
+#define PyUnicode_CheckExact(o) PyUnicode_Check(o)
+#define PyTuple_CheckExact(o)   PyTuple_Check(o)
+#define PyList_CheckExact(o)    PyList_Check(o)
+#define PyDict_CheckExact(o)    PyDict_Check(o)
+
 
 #define Py_REFCNT(ob)           (((PyObject*)(ob))->ob_refcnt)
 #define Py_TYPE(ob)             (((PyObject*)(ob))->ob_type)

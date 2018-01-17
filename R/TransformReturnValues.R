@@ -16,7 +16,7 @@ setMethod("pyTransformReturn", signature(obj = "PythonObject"),
           function(obj){
     variableName <- sprintf("__R__.namespace[%i]", obj$id)
     if (obj$isCallable){
-        return(pyFunction(variableName))
+        return(pyFunction(variableName, regFinalizer = TRUE))
     }else if ( obj$type == "list" ){
         return(pyList(variableName, regFinalizer = TRUE))
     }else if ( obj$type == "dict" ){

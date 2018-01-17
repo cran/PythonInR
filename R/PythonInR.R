@@ -31,56 +31,6 @@ if ( ret == -1 ) warning("stdout redirection was not successful")
 return( invisible( ret ) )
 }
 
-pyConnectWinDll <- function(dllName, dllDir, majorVersion, 
-                            pythonHome, pyArch, useCstdout=NULL){
-    if(pyIsConnected()){
-        cat("R is already connected to Python!\n")
-        return(NULL)
-    }
-    if (is.null(pyArch)) stop("couldn't detect Python architecture!")
-    useAlteredSearchPath <- if (is.null(dllDir)) FALSE else TRUE
-    if ((!is.null(dllName)) & (!is.null(dllDir))){
-        dllPath <- file.path(dllDir, dllName)
-        dllVersion <- guessDllVersion(dllPath)
-        if (grepl("i386", R.version$arch)){
-            if (dllVersion != 32) stop("64 bit dll (Python) can not be linked to 32 bit R!")
-        }else{
-            if (dllVersion != 64) stop("32 bit dll (Python) can not be linked to 64 bit R!")
-        }
-    }
-    if (is.null(majorVersion)){
-        majorVersion = as.integer(regmatches(dllName, regexpr("[0-9]", dllName)))
-    }
-    if ( is.null(useCstdout) ){
-        useCstdout <- if ( (majorVersion==3) & (pyArch=='64bit') ) FALSE else TRUE
-    }
-    #cat("useCstdout: ", useCstdout, "\n")
-    if (!is.null(pythonHome)){
-        Sys.setenv(PYTHONHOME=pythonHome)
-    }    
-    .Call( "py_set_major_version", majorVersion)
-    .Call( "py_connect", dllName, dllDir, as.integer(useAlteredSearchPath) )
-    .Call( "py_get_process_addresses" )
-    .Call( "py_set_program_name", "PythonInR" )
-    if(useCstdout){
-        .Call( "py_import_append_logCatcher" ) # has to be before py_initialize
-    }
-    .Call( "py_initialize", 1 )
-    .Call( "py_init_py_values" )
-    if(useCstdout){
-        .Call( "py_init_redirect_stderrout" )
-    }
-    # import define a alternative to execfile as sugested at various sources
-    # http://www.diveintopython3.net/porting-code-to-python-3-with-2to3.html
-    if (majorVersion >= 3){
-        if (!useCstdout){
-            registerLogCatcher()
-            pyOptions("winPython364", TRUE)
-        }
-        pyExec("def execfile(filename):\n    exec(compile(open(filename, 'rb').read(), filename, 'exec'), globals())");
-    }
-}
-
 pyConnectStatic <- function(){
     .Call( "py_connect", 1 )
 }
@@ -114,6 +64,7 @@ pyCranConnect <- function(){
 #  -----------------------------------------------------------------------------
 #  pyConnect
 #  =========
+#' @rdname pyConnect
 #' @title connects R to Python
 #'
 #' @description Connects R to Python. 
@@ -132,7 +83,7 @@ pyCranConnect <- function(){
 #'          the explicitly linked version needs to be connected manually. 
 #'          More information can be found at the README file or at 
 #'          \url{http://pythoninr.bitbucket.org/}.
-#' @note See the \href{https://cran.r-project.org/web/packages/PythonInR/README.html}{README} for more information about the Windows setup.
+#' @note See the \href{https://CRAN.R-project.org/package=PythonInR/README.html}{README} for more information about the Windows setup.
 #' @examples
 #' \dontrun{
 #' ## Linux examples
@@ -176,6 +127,65 @@ pyConnect <- function(pythonExePath=NULL, dllDir=NULL, pythonHome=NULL){
 
     }
     invisible(NULL)
+}
+
+#' @rdname pyConnect
+#' @param dllName a character giving the name of the dll file 
+#'                (e.g.d \code{"python27.dll"}).
+#' @param majorVersion an integer giving the major Python version
+#'                     (e.g. \code{2} or \code{3}).
+#' @param pyArch a character giving the Python architecture, 
+#'               i.e. \code{"32bit"} or \code{"64bit"}.
+#' @param useCstdout a logical indicating if the \code{C} stdout should be
+#'                   used or the stout should be redirected at a Python level.
+pyConnectWinDll <- function(dllName, dllDir, majorVersion, 
+                            pythonHome, pyArch, useCstdout=NULL){
+    if(pyIsConnected()){
+        cat("R is already connected to Python!\n")
+        return(NULL)
+    }
+    if (is.null(pyArch)) stop("couldn't detect Python architecture!")
+    useAlteredSearchPath <- if (is.null(dllDir)) FALSE else TRUE
+    if ((!is.null(dllName)) & (!is.null(dllDir))){
+        dllPath <- file.path(dllDir, dllName)
+        dllVersion <- guessDllVersion(dllPath)
+        if (grepl("i386", R.version$arch)){
+            if (dllVersion != 32) stop("64 bit dll (Python) can not be linked to 32 bit R!")
+        }else{
+            if (dllVersion != 64) stop("32 bit dll (Python) can not be linked to 64 bit R!")
+        }
+    }
+    if (is.null(majorVersion)){
+        majorVersion = as.integer(regmatches(dllName, regexpr("[0-9]", dllName)))
+    }
+    if ( is.null(useCstdout) ){
+        useCstdout <- if ( (majorVersion==3) & (pyArch=='64bit') ) FALSE else TRUE
+    }
+    #cat("useCstdout: ", useCstdout, "\n")
+    if (!is.null(pythonHome)){
+        Sys.setenv(PYTHONHOME=pythonHome)
+    }    
+    .Call( "py_set_major_version", majorVersion)
+    .Call( "py_connect", list(dllName, dllDir, as.integer(useAlteredSearchPath)))
+    .Call( "py_get_process_addresses" )
+    .Call( "py_set_program_name", "PythonInR" )
+    if(useCstdout){
+        .Call( "py_import_append_logCatcher" ) # has to be before py_initialize
+    }
+    .Call( "py_initialize", 1 )
+    .Call( "py_init_py_values" )
+    if(useCstdout){
+        .Call( "py_init_redirect_stderrout" )
+    }
+    # import define a alternative to execfile as sugested at various sources
+    # http://www.diveintopython3.net/porting-code-to-python-3-with-2to3.html
+    if (majorVersion >= 3){
+        if (!useCstdout){
+            registerLogCatcher()
+            pyOptions("winPython364", TRUE)
+        }
+        pyExec("def execfile(filename):\n    exec(compile(open(filename, 'rb').read(), filename, 'exec'), globals())");
+    }
 }
 
 #  -----------------------------------------------------------------------------
