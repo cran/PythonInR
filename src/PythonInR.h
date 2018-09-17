@@ -20,7 +20,7 @@ extern int r_int_to_py_long_flag;
 #include <string.h>
 //#include <bytesobject.h>
 
-#ifdef __unix__ /* __unix__ is usually defined by compilers targeting Unix systems */
+#if ( defined (__unix__) || (defined (__APPLE__) && defined (__MACH__)) )
     #include <dlfcn.h>
 #elif defined _WIN32 /* _Win32 is usually defined by compilers targeting 32 or 64 bit Windows systems */
     #include <windows.h>

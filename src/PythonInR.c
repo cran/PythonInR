@@ -75,7 +75,7 @@ SEXP py_connect(SEXP initvars){
     #endif
     
     // http://www.informit.com/articles/article.aspx?p=22435
-    #ifdef __unix__ /* __unix__ is usually defined by compilers targeting Unix systems */
+    #if ( defined (__unix__) || (defined (__APPLE__) && defined (__MACH__)) )
         // if you don't load it _Py_ZeroStruct is undefined! Which leads to a complaint in
         // sys.execpthook! _Py_ZeroStruct is kind of the NULL (None) in Python
         // Py_None is actally a C macro wich returns _Py_ZeroStruct

@@ -338,16 +338,18 @@ const char *r_get_py_object_location(SEXP x){
 	int i, len;
 	
 	x = CAR(x);
-	names = GET_NAMES(x);
+	PROTECT(names = GET_NAMES(x));
 	len = GET_LENGTH(x);
 	
 	for(i = 0; i < len; i++) {
-		if ( strcmp(R_TO_C_STRING_V(names, i), "py.variableName") == 0 ){
+		if ( strcmp(R_TO_C_STRING_V(names, i), "py.variableName") == 0 ) {
 			cx = nthcdr(x, (int) i);
 			x = CAR(cx);
+            UNPROTECT(1);
 			return R_TO_C_STRING(x);
 		}
 	}
+    UNPROTECT(1);
 	return NULL;
 }
 
@@ -374,7 +376,7 @@ PyObject *r_to_py(SEXP r_object){
 	}
     
     len = GET_LENGTH(r_object);
-    names = GET_NAMES(r_object);
+    names = PROTECT(GET_NAMES(r_object));
     
     if(GET_LENGTH(names) > 0){                                                  // Case 1: R object has names!        
         py_object = r_to_py_dict(names, r_object);
@@ -387,7 +389,9 @@ PyObject *r_to_py(SEXP r_object){
     }else if ( len == 0 ){                                                      // Case 4: Convert R NULL or character(0), ... to Py_None
         Py_RETURN_NONE; // Return value: New reference.
     }else{
+        UNPROTECT(1);
         error("the provided R object can not be type cast into an Python object\n"); 
     }
+    UNPROTECT(1);
     return py_object;
 }

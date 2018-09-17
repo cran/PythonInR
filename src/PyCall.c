@@ -34,10 +34,12 @@ SEXP py_call_obj(SEXP r_obj_name, SEXP r_args, SEXP r_kw, SEXP simplify, SEXP au
     // py_args = r_non_nested_list_to_py_tuple(r_args);
     long len_kw = GET_LENGTH(r_kw);
     py_args = r_to_py_tuple(r_args);
-    if (len_kw < 1){
+    if ( len_kw < 1 ) {
         py_kw = NULL;
-    }else{
-        py_kw = r_to_py_dict(GET_NAMES(r_kw), r_kw);
+    } else {
+        SEXP key = PROTECT(GET_NAMES(r_kw));
+        py_kw = r_to_py_dict(key, r_kw);
+        UNPROTECT(1);
     }
     
     py_ret_val = PyObject_Call(py_object, py_args, py_kw);
