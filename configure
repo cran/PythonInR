@@ -24,7 +24,7 @@ if ! [ -z "$USESPECIALPYTHONVERSION" ]; then
 fi 
 
 PYVERSION=`python -c "import sys;import distutils.sysconfig as sc;sys.stdout.write(sc.get_config_var('VERSION'))"`
-## PYINCLUDE=`python -c "import sys;import distutils.sysconfig as sc;sys.stdout.write(sc.get_config_var('INCLUDEPY'))"`
+PYINCLUDE=`python -c "import sys;import distutils.sysconfig as sc;sys.stdout.write(sc.get_config_var('INCLUDEPY'))"`
 PYBINPATH=`python -c "import sys;import os;sys.stdout.write(os.path.dirname(sys.executable))"`
 # sys.version_info.major would be a alternative to hexversion
 PY3FLAG=`python -c 'import sys; print("%i" % (sys.hexversion<0x03000000))'`
@@ -47,13 +47,8 @@ else
     PYXY="PYTHONLIBXY=libpython"$PYVERSION".so"
 fi
 
-if [ $(command -v pkg-config) ]; then
-  PYLIBS="PKG_LIBS="`pkg-config --libs python`
-  PYCFLAGS="PKG_CFLAGS="`pkg-config --cflags --silence-errors python`" -D $PYXY -D PYTHON_IN_R_NO_EXPLICIT_LINKING"
-else 
-  PYLIBS="PKG_LIBS="`$PYBINPATH/python$PYVERSION-config --ldflags`
-  PYCFLAGS="PKG_CFLAGS="`$PYBINPATH/python$PYVERSION-config --cflags`" -D $PYXY -D PYTHON_IN_R_NO_EXPLICIT_LINKING"
-fi
+PYLIBS="PKG_LIBS="`$PYBINPATH/python$PYVERSION-config --ldflags`
+PYCFLAGS="PKG_CFLAGS="`$PYBINPATH/python$PYVERSION-config --cflags`" -D $PYXY -D PYTHON_IN_R_NO_EXPLICIT_LINKING"
 
 ## echo ""
 ## echo "Makevars:"

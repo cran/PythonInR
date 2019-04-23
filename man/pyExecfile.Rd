@@ -16,8 +16,7 @@ The function pyExecfile calls the Python function \code{execfile}. which
 }
 \details{
 The function execfile is kind of the source of Python. Since it got omitted 
-         in Python 3 a replacement gets assigned following the suggestions from \cr
-         \url{http://www.diveintopython3.net/porting-code-to-python-3-with-2to3.html}.
+         in Python 3 a replacement gets assigned following common practices.
 }
 \examples{
 \dontrun{

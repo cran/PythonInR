@@ -83,7 +83,7 @@ pyCranConnect <- function(){
 #'          the explicitly linked version needs to be connected manually. 
 #'          More information can be found at the README file or at 
 #'          \url{http://pythoninr.bitbucket.org/}.
-#' @note See the \href{https://CRAN.R-project.org/package=PythonInR/README.html}{README} for more information about the Windows setup.
+#' @note See the \strong{README} for more information about the Windows setup.
 #' @examples
 #' \dontrun{
 #' ## Linux examples

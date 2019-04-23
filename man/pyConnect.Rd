@@ -47,7 +47,7 @@ There is a different behavior for the static (Linux default)
          \url{http://pythoninr.bitbucket.org/}.
 }
 \note{
-See the \href{https://CRAN.R-project.org/package=PythonInR/README.html}{README} for more information about the Windows setup.
+See the \strong{README} for more information about the Windows setup.
 }
 \examples{
 \dontrun{

@@ -56,8 +56,7 @@ To enable automatic connection for the explicitly linked version the environment
 ## NOTES
 ### Python 3
 Due to api changes in Python 3 the function `execfile` is no longer available.
-The PythonInR package provides a `execfile` function following the typical
-[workaround](http://www.diveintopython3.net/porting-code-to-python-3-with-2to3.html#execfile).
+The PythonInR package provides a `execfile` function following the typical workaround.
 ```python
 def execfile(filename):
     exec(compile(open(filename, 'rb').read(), filename, 'exec'), globals())
@@ -204,7 +203,6 @@ to Python this will **yield** to **segfault** !
 
 **NOTE (bytes):**   
 In short, in Python 3 the data type string was replaced by the data type bytes.
-More information can be found [here](http://www.diveintopython3.net/strings.html).
 
 
 ## Cheat Sheet  

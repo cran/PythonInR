@@ -236,8 +236,7 @@ pyExecgIntern <- function(code, autoTypecast=TRUE, mergeNamespaces=FALSE,
 #' @param filename a character string giving the name or full path of the file to
 #'                 be executed.
 #' @details The function execfile is kind of the source of Python. Since it got omitted 
-#'          in Python 3 a replacement gets assigned following the suggestions from \cr
-#'          \url{http://www.diveintopython3.net/porting-code-to-python-3-with-2to3.html}.
+#'          in Python 3 a replacement gets assigned following common practices.
 #' @examples
 #' \dontrun{
 #' pyExecfile("myPythonScript.py")

@@ -387,7 +387,7 @@ PyObject *r_to_py(SEXP r_object){
     }else if ( (IS_LIST(r_object) && len >= 1) ) {                              // Case 3: R object is a list!
         py_object = r_to_py_list(r_object);
     }else if ( len == 0 ){                                                      // Case 4: Convert R NULL or character(0), ... to Py_None
-        Py_RETURN_NONE; // Return value: New reference.
+        py_object = PY_NONE;
     }else{
         UNPROTECT(1);
         error("the provided R object can not be type cast into an Python object\n"); 

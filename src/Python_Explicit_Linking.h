@@ -491,7 +491,8 @@ typedef PyObject * (__cdecl *R_PyObject_CallFunction) (PyObject *, char *, ...);
 #define PyList_GET_SIZE(op)    Py_SIZE(op)
 
 // #define PyBytes_AsString PyString_AsString des is a falsch!
-                 
+
+// Differs from the Python definition since PY_NONE is built with Py_BuildValue                
 #define Py_RETURN_NONE return PY_NONE
 // Py_INCREF is des gleiche wia Py_IncRef nur hoid ois object damit mas better getn kann
 #define Py_INCREF(op) Py_IncRef(op)
