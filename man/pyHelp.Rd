@@ -17,5 +17,7 @@ a convenience function to access the Python \strong{help} system.
 }
 \examples{
 \dontshow{PythonInR:::pyCranConnect()}
+\dontrun{
 pyHelp("abs")
+}
 }

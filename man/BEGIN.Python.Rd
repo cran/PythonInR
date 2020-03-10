@@ -18,10 +18,6 @@ BEGIN.Python emulates the behavior of the Python terminal
          and therefore allows interactive Python code development
          from within R.
 }
-\note{
-This won't work with RStudio because of a known  
-\href{https://support.rstudio.com/hc/communities/public/questions/206744317-readLines-Bug-?page=1#answer-206647788}{RStudio issue}.
-}
 \examples{
 \dontshow{PythonInR:::pyCranConnect()}
 \dontrun{

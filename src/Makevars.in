@@ -1,0 +1,25 @@
+# Compilation used the following non-portable flag(s):
+#   ‘-Wdate-time’ ‘-Werror=format-security’ ‘-Wformat’
+
+PKG_LIBS=@PKG_LIBS@
+PKG_CFLAGS=@PKG_CFLAGS@ -D @PYXY@ -D PYTHON_IN_R_NO_EXPLICIT_LINKING
+
+OBJECTS = CToR.o PythonInR.o CastPyObjects.o CastRObjects.o GetPyObjects.o init.o PyCall.o PyRunString.o Python_Explicit_Linking.o SetPyObjects.o
+
+all: $(SHLIB)
+
+$(SHLIB): $(OBJECTS)
+
+#ALL_CFLAGS = $(R_XTRA_CFLAGS) $(PKG_CFLAGS) $(CPICFLAGS) $(SHLIB_CFLAGS) $(CFLAGS)
+#ALL_CPPFLAGS = $(R_XTRA_CPPFLAGS) $(PKG_CPPFLAGS) $(CLINK_CPPFLAGS) $(CPPFLAGS)
+
+ALL_CFLAGS = $(R_XTRA_CFLAGS) $(PKG_CFLAGS) 
+ALL_CPPFLAGS = $(R_XTRA_CPPFLAGS) $(PKG_CPPFLAGS)
+
+
+%.o: %.c
+	$(CC) $(R_XTRA_CPPFLAGS) $(R_XTRA_CFLAGS) $(PKG_CFLAGS) $(CPICFLAGS) $(SHLIB_CFLAGS) -c $< -o $@
+
+# original from /etc/R/Makeconf
+# %.o: %.c
+# $(CC) $(ALL_CPPFLAGS) $(ALL_CFLAGS) -c $< -o $@

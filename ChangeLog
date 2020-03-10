@@ -1,6 +1,10 @@
+2020-02-26
+    * By default the new fedora only knows the command python3 but not python,
+      changed the configure script to cover this change in fedora.
+
 2018-07-27
 
-	* activated debug printing of Makevars again
+    * activated debug printing of Makevars again
 
 2018-01-16
 

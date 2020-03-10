@@ -46,7 +46,9 @@ pyDir <- function(objName=NULL){
 #' @return Prints the help to the given string.
 #' @examples
 #' \dontshow{PythonInR:::pyCranConnect()}
+#' \dontrun{
 #' pyHelp("abs")
+#' }
 #  -----------------------------------------------------------
 pyHelp <- function(topic){
     if ( pyConnectionCheck() ) return(invisible(NULL))

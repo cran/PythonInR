@@ -5,30 +5,39 @@
 #
 # NOTES:
 # The system variable USESPECIALPYTHONVERSION can be used to link to a special
-# python version. 
+# python version.
 # export USESPECIALPYTHONVERSION="python3.4"
 # it can be very usefull especially for testing but one has to ensure  that
 # the file PYVERSION-config is present at the provided location else it will
 # fail.
-# But when using python3 also python3-dev has to be installed 
+# But when using python3 also python3-dev has to be installed
 # (apt-get install python3-dev)
-# 
+#
 # gcc:
 # there seems to be a new option which doesn't allows me to compile
 # -fstack-protector-strong so I just remove it
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 if ! [ -z "$USESPECIALPYTHONVERSION" ]; then
-    echo "use special version"
-    alias python="$USESPECIALPYTHONVERSION"
-fi 
+  echo "use special version"
+  alias python3="$USESPECIALPYTHONVERSION"
+fi
 
-PYVERSION=`python -c "import sys;import distutils.sysconfig as sc;sys.stdout.write(sc.get_config_var('VERSION'))"`
-PYINCLUDE=`python -c "import sys;import distutils.sysconfig as sc;sys.stdout.write(sc.get_config_var('INCLUDEPY'))"`
-PYBINPATH=`python -c "import sys;import os;sys.stdout.write(os.path.dirname(sys.executable))"`
+PYVERSION=`python3 -c "import sys;import distutils.sysconfig as sc;sys.stdout.write(sc.get_config_var('VERSION'))"`
+PYINCLUDE=`python3 -c "import sys;import distutils.sysconfig as sc;sys.stdout.write(sc.get_config_var('INCLUDEPY'))"`
+PYBINPATH=`python3 -c "import sys;import os;sys.stdout.write(os.path.dirname(sys.executable))"`
 # sys.version_info.major would be a alternative to hexversion
-PY3FLAG=`python -c 'import sys; print("%i" % (sys.hexversion<0x03000000))'`
+PY3FLAG=`python3 -c 'import sys; print("%i" % (sys.hexversion<0x03000000))'`
+PYABOVE38FLAG=`python3 -c 'import sys; print("%i" % (sys.hexversion>0x03080000))'`
 PICFLAGS=`"${R_HOME}/bin/R" CMD config CXX11PICFLAGS`
+
+if [ $PYABOVE38FLAG -eq 1 ]; then
+  echo "detected python3.8 or newer"
+  PYEMBEDPKGCONF="-embed"
+  PYEMBEDPYCONF="--embed"
+fi
+
+#python-3.8-embed
 
 ## echo $PYVERSION
 ## echo $PYBINPATH
@@ -36,56 +45,63 @@ PICFLAGS=`"${R_HOME}/bin/R" CMD config CXX11PICFLAGS`
 ## echo $PICFLAGS
 ## echo ""
 
-## TODO: 
-## Change the generation of PKG_LIBS so it works with coda.
+## TODO:
+## Change the generation of PKG_LIBS so it works with conda.
 ## PYLIBS="PKG_LIBS="`python -c 'import sysconfig; print(" ".join(sysconfig.get_config_var("LDSHARED").split()[1:]))'`
 if [ $PY3FLAG -eq 0 ]; then
-    echo "python version is > 3"
-    PYXY="PYTHONLIBXY=libpython"$PYVERSION"m.so"    
-else 
-    echo "python version is < 3"
-    PYXY="PYTHONLIBXY=libpython"$PYVERSION".so"
+  echo "python version is > 3"
+  PYXY="PYTHONLIBXY=libpython"$PYVERSION"m.so"
+else
+  echo "python version is < 3"
+  PYXY="PYTHONLIBXY=libpython"$PYVERSION".so"
 fi
 
-PYLIBS="PKG_LIBS="`$PYBINPATH/python$PYVERSION-config --ldflags`
-PYCFLAGS="PKG_CFLAGS="`$PYBINPATH/python$PYVERSION-config --cflags`" -D $PYXY -D PYTHON_IN_R_NO_EXPLICIT_LINKING"
+PKG_LIBS=`$PYBINPATH/python$PYVERSION-config --ldflags $PYEMBEDPYCONF`
 
-## echo ""
-## echo "Makevars:"
-## echo $PYLIBS
-## echo $PYCFLAGS | sed 's/Wstrict-prototypes/pedantic/' | sed 's/ -fstack-protector-strong//'
-## echo ""
+##
+## PKG_CFLAGS
+##
+if [ -z "$(pkg-config --version 2>&1 | grep 'pkg-config')" ]; then
+  if (pkg-config --exists python-$PYVERSION$PYEMBEDPKGCONF); then
+    echo "pkg-config"
+    PKG_CFLAGS=`pkg-config --cflags python-$PYVERSION$PYEMBEDPKGCONF`
+  else
+    #echo "python-config"
+    #PKG_CFLAGS=`$PYBINPATH/python$PYVERSION-config --cflags $PYEMBEDPYCONF`
+    PKG_CFLAGS="-I$PYINCLUDE"
+  fi
+else
+  #echo "python-config"
+  #PKG_CFLAGS=`$PYBINPATH/python$PYVERSION-config --cflags $PYEMBEDPYCONF`
+  PKG_CFLAGS="-I$PYINCLUDE"
+fi
 
-# replacing Wstric-prototypes removes some unnecessary warnings
 
-PYCFLAGS=$(echo $PYCFLAGS | sed 's/ -Wstrict-prototypes//')
-PYCFLAGS=$(echo $PYCFLAGS | sed 's/ -fstack-protector-strong//')
-PYCFLAGS=$(echo $PYCFLAGS | sed 's/ -Wdate-time//')
-PYCFLAGS=$(echo $PYCFLAGS | sed 's/ -Werror=format-security//')
-PYCFLAGS=$(echo $PYCFLAGS | sed 's/ -Wformat//')
+PKG_CFLAGS=$(echo $PKG_CFLAGS | sed 's/ -Wstrict-prototypes//')
+PKG_CFLAGS=$(echo $PKG_CFLAGS | sed 's/ -fstack-protector-strong//')
+PKG_CFLAGS=$(echo $PKG_CFLAGS | sed 's/ -Wdate-time//')
+PKG_CFLAGS=$(echo $PKG_CFLAGS | sed 's/ -Werror=format-security//')
+PKG_CFLAGS=$(echo $PKG_CFLAGS | sed 's/ -Wformat//')
 
 ## added 27.07.2018
-PYCFLAGS=$(echo $PYCFLAGS | sed 's/ -fstack-clash-protection//')
-PYCFLAGS=$(echo $PYCFLAGS | sed 's/ -fcf-protection//')
+PKG_CFLAGS=$(echo $PKG_CFLAGS | sed 's/ -fstack-clash-protection//')
+PKG_CFLAGS=$(echo $PKG_CFLAGS | sed 's/ -fcf-protection//')
 
 if ! [ -z "$PICFLAGS" ]; then
-  PYCFLAGS=$(echo $PYCFLAGS | sed 's/ -fpic//')
-fi 
+  PKG_CFLAGS=$(echo $PKG_CFLAGS | sed 's/ -fpic//')
+fi
 
-# if [ -z "$PICFLAGS" ]; then
-#   echo $PYCFLAGS | sed 's/Wstrict-prototypes/pedantic/' | sed 's/ -fstack-protector-strong//' | sed 's/ -Wdate-time//' | sed 's/ -Werror=format-security//' | sed 's/ -Wformat//' >> src/Makevars 
-# else 
-#   echo $PYCFLAGS | sed 's/Wstrict-prototypes/pedantic/' | sed 's/ -fstack-protector-strong//' | sed 's/ -Wdate-time//' | sed 's/ -Werror=format-security//' | sed 's/ -Wformat//' | sed 's/ -fpic//' >> src/Makevars  
-# fi
+
+
+sed -e "s|@PKG_CFLAGS@|$PKG_CFLAGS|" -e "s|@PKG_LIBS@|$PKG_LIBS|" -e "s|@PYXY@|$PYXY|" src/Makevars.in > src/Makevars
 
 echo ""
+echo "-----------------------------------"
 echo "  Makevars:"
 echo ""
-echo "    "$PYLIBS
+cat src/Makevars
 echo ""
-echo "    "$PYCFLAGS
-echo ""
+echo "-----------------------------------"
 echo ""
 
-echo ${PYLIBS} > src/Makevars
-echo ${PYCFLAGS} >> src/Makevars
+exit 0

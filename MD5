@@ -1,8 +1,8 @@
-541395f2d3aea6393956bb23bcad5fb3 *ChangeLog
-16c639b795b3c162fa60016c938e6a97 *DESCRIPTION
+0c9df7953c463761b277567bb139853f *ChangeLog
+f120060a5c39e26e24969f5b8393f847 *DESCRIPTION
 fdf8803f84f1d032720c76c1dabdba0e *NAMESPACE
 8f23ca90a540abd478e8eae1d9f7ca1a *R/AutodetectPython.R
-82ef4cf949d70774f311c906df0896be *R/Basics.R
+37aab45a28757b4fd42d86ca69f2a817 *R/Basics.R
 2cb549a7b1bbeafde04d7a5329bf2a65 *R/PyAttach.R
 6bb89d261699323e50d521d81dbca6ac *R/PyCall.R
 74b5c060c224d2b9a4b7b9c8e5f80f06 *R/PyClasses.R
@@ -15,14 +15,14 @@ d9eab43f33e8f35cf562b98b8d392ea4 *R/PyObjectDict.R
 bb2be964ec8bdea823542bf7a7faab95 *R/PyObjectTuple.R
 4f06f22e66785fd8dc9d8b10fb930e0e *R/PyOptions.R
 a5e7059dbff4935aa2087bd8bc3ab523 *R/PySet.R
-8129b32851b15ca444f1a2cbd78a3e6f *R/PySource.R
+2c814c4f07f1f8a05f1ea5b2bc28845e *R/PySource.R
 2cf4d7429fcbb99d87ac5b79ec2e7b00 *R/PythonInR.R
 033dfb5f35fbbf6f109d228a0b53186d *R/TransformReturnValues.R
 e9b54a51e96a787b28ad51f94e03c898 *R/Utility.R
 b8313baf3d27ccdb477556c07b37f2b1 *R/zzz.R
 873763a1e1dc563e392f21866860a148 *README.md
 75a78cb0c1fa53ba6696b487f37ef4c2 *cleanup
-0693eaeda7d05f9cc04b54faa26d7725 *configure
+2279dda51f0fa53ccd2b57dc0370100e *configure
 70031f25497e1421e156bd2d5316fc9e *inst/testing/Basics.R
 aa867dd99ecb0cddd42f1af8d31e592c *inst/testing/NA_NaN_Inf.R
 a4f40b6366bc25896b02d8c2a13fff19 *inst/testing/PyAttach.R
@@ -37,7 +37,7 @@ d1c2230280e49bc7d07ad6cad531f32c *inst/testing/PyOptions.R
 be7608bcd269973c9aebd61531f7a63e *inst/testing/Test_cases.py
 896888f9d5d5f91e5729ae1b53830865 *inst/testing/Utf8.R
 f0ab85292080c6f33ec7c32cbe5b9594 *inst/testing/all.R
-3c2e55d7ff670b8b604b96151d1e8c0d *man/BEGIN.Python.Rd
+906a264ed7c8e046ce900d1b8e9a3b7f *man/BEGIN.Python.Rd
 314f3e26badfaaa135098da9a1d62110 *man/autodetectPython.Rd
 a10a59d6fd185cd885e2a681efb58eba *man/pyAttach.Rd
 df989a552858494ba638839d565657e4 *man/pyCall.Rd
@@ -52,7 +52,7 @@ f14bee65bfe64de165bbd9ead37d7b19 *man/pyExit.Rd
 16726509ab63030160571ce5baa88e23 *man/pyFunction.Rd
 f8e52a66f6b879e83f3f975ed461a8df *man/pyGet.Rd
 a35bdcf5644729f15993c00168d912c4 *man/pyGet0.Rd
-bcd51012f9f97acfa00c3a55cbe0af5f *man/pyHelp.Rd
+8cd064e1c651bd0030907c6f27c38f64 *man/pyHelp.Rd
 4acf3d6a674b089c083c3080911c434e *man/pyImport.Rd
 2c4cb67c7ad6ebd6efd940402735a415 *man/pyIsConnected.Rd
 58a09fb7082904b081f208e8982d2dda *man/pyList.Rd
@@ -71,6 +71,7 @@ db5c84655c1e971494d99587c9e14820 *man/pyTuple.Rd
 1f5354226008b9de135e496d48884822 *src/CastRObjects.h
 91471cf85c09b13d3ab936fba7e0e542 *src/GetPyObjects.c
 12fa0d8d4591328ddb4c1a680bad13d5 *src/GetPyObjects.h
+049dc07c7696793feecf168f968da0b1 *src/Makevars.in
 67e8d5b072c91b99b6ec67f5fa0f80d8 *src/PyCall.c
 254e9df8b96b33f9d891f1fcadd81768 *src/PyCall.h
 a4ecd1bb63a3a910f88ef47d06b15cef *src/PyRunString.c

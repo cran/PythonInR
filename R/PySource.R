@@ -56,6 +56,8 @@ pySource <- function(file, local = FALSE, echo = verbose, print.eval = echo,
 #  -----------------------------------------------------------
 #  BEGIN.Python
 #  ============
+#  note This won't work with RStudio because of a known  
+#  \href{https://support.rstudio.com/hc/communities/public/questions/206744317-readLines-Bug-?page=1#answer-206647788}{RStudio issue}.
 #' @title Execute Python interactively from within R
 #'
 #' @description The function BEGIN.Python starts an Python read-eval-print loop.
@@ -64,8 +66,6 @@ pySource <- function(file, local = FALSE, echo = verbose, print.eval = echo,
 #'          from within R.
 #' @return Returns the entered code as character, code lines which throw an
 #'         exception are omitted.
-#' @note This won't work with RStudio because of a known  
-#' \href{https://support.rstudio.com/hc/communities/public/questions/206744317-readLines-Bug-?page=1#answer-206647788}{RStudio issue}.
 #' @examples
 #' \dontshow{PythonInR:::pyCranConnect()}
 #' \dontrun{
