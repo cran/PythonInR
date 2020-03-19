@@ -1,5 +1,5 @@
 0c9df7953c463761b277567bb139853f *ChangeLog
-f120060a5c39e26e24969f5b8393f847 *DESCRIPTION
+643a3fd502ef937c41ff659626c3eb1c *DESCRIPTION
 fdf8803f84f1d032720c76c1dabdba0e *NAMESPACE
 8f23ca90a540abd478e8eae1d9f7ca1a *R/AutodetectPython.R
 37aab45a28757b4fd42d86ca69f2a817 *R/Basics.R
@@ -22,7 +22,7 @@ e9b54a51e96a787b28ad51f94e03c898 *R/Utility.R
 b8313baf3d27ccdb477556c07b37f2b1 *R/zzz.R
 873763a1e1dc563e392f21866860a148 *README.md
 75a78cb0c1fa53ba6696b487f37ef4c2 *cleanup
-2279dda51f0fa53ccd2b57dc0370100e *configure
+95bd57b671bbe3e74567afcceaef2f29 *configure
 70031f25497e1421e156bd2d5316fc9e *inst/testing/Basics.R
 aa867dd99ecb0cddd42f1af8d31e592c *inst/testing/NA_NaN_Inf.R
 a4f40b6366bc25896b02d8c2a13fff19 *inst/testing/PyAttach.R
@@ -71,14 +71,14 @@ db5c84655c1e971494d99587c9e14820 *man/pyTuple.Rd
 1f5354226008b9de135e496d48884822 *src/CastRObjects.h
 91471cf85c09b13d3ab936fba7e0e542 *src/GetPyObjects.c
 12fa0d8d4591328ddb4c1a680bad13d5 *src/GetPyObjects.h
-049dc07c7696793feecf168f968da0b1 *src/Makevars.in
+2e6af85958f48ca88917aef498146742 *src/Makevars.in
 67e8d5b072c91b99b6ec67f5fa0f80d8 *src/PyCall.c
 254e9df8b96b33f9d891f1fcadd81768 *src/PyCall.h
 a4ecd1bb63a3a910f88ef47d06b15cef *src/PyRunString.c
 11c1b74ede8a0f64f160b697d5b76d10 *src/PyRunString.h
-e45ce46c647d1c984bbd37a7c5702981 *src/PythonInR.c
+3f7064d24f938c45852c5c5a0acae69f *src/PythonInR.c
 d1f439812dbdd40ca37056a9d05924e5 *src/PythonInR.h
-ba8f53303ece4d0b8b2d80db7c74fe8e *src/PythonInRMacros.h
+941d826d094c3f8946564da5e6f9894a *src/PythonInRMacros.h
 d829082338e1eeca516b55ac4ca404f9 *src/Python_Explicit_Linking.c
 14c8f81104bf84dcbf2e4ce40d858df7 *src/Python_Explicit_Linking.h
 0eeac7180090051d5e018f5951e35054 *src/SetPyObjects.c

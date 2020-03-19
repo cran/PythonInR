@@ -23,6 +23,15 @@ if ! [ -z "$USESPECIALPYTHONVERSION" ]; then
   alias python3="$USESPECIALPYTHONVERSION"
 fi
 
+if ! [ -z "$(python3 -V 2>&1 | grep 'python')" ]; then
+  if ! [ -z "$(python -V 2>&1 | grep 'python')" ]; then
+    echo "Could not find python!"
+    exit 1
+  else
+    alias python3=python
+  fi
+fi
+
 PYVERSION=`python3 -c "import sys;import distutils.sysconfig as sc;sys.stdout.write(sc.get_config_var('VERSION'))"`
 PYINCLUDE=`python3 -c "import sys;import distutils.sysconfig as sc;sys.stdout.write(sc.get_config_var('INCLUDEPY'))"`
 PYBINPATH=`python3 -c "import sys;import os;sys.stdout.write(os.path.dirname(sys.executable))"`

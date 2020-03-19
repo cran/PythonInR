@@ -96,8 +96,6 @@
         // ---------------------------------------------------------------------
         // Python 3 
         // ---------------------------------------------------------------------
-        #define PY_V_CHAR(s) (wchar_t *)s
-        #define PY_V_CHAR2(s) PyUnicode_FromString(s)
         #define PY_TO_C_OBJECT_STRING PY_TO_C_UNICODE
         //#define PyString_FromString(s) PyUnicode_FromFormat("%s", s)
         #define PyString_AsString PyBytes_AsString
@@ -113,12 +111,10 @@
         // ---------------------------------------------------------------------
         // Python tested with 2.7 but should work also with earlier versions
         // ---------------------------------------------------------------------
-        #define PY_V_CHAR(s) s
-        #define PY_V_CHAR2(s) s
         #define PY_TO_C_OBJECT_STRING PY_TO_C_STRING
         #define PyUnicode_FromConstChar(s) PyUnicode_FromString(s)
         #define PyInternalString_FromString(s) PyString_FromString(s)
-    #endif    
+    #endif
 #endif
 
 #endif

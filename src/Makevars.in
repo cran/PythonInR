@@ -2,7 +2,7 @@
 #   ‘-Wdate-time’ ‘-Werror=format-security’ ‘-Wformat’
 
 PKG_LIBS=@PKG_LIBS@
-PKG_CFLAGS=@PKG_CFLAGS@ -D @PYXY@ -D PYTHON_IN_R_NO_EXPLICIT_LINKING
+PKG_CFLAGS=@PKG_CFLAGS@ -D@PYXY@ -DPYTHON_IN_R_NO_EXPLICIT_LINKING
 
 OBJECTS = CToR.o PythonInR.o CastPyObjects.o CastRObjects.o GetPyObjects.o init.o PyCall.o PyRunString.o Python_Explicit_Linking.o SetPyObjects.o
 

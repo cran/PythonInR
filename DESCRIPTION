@@ -1,6 +1,6 @@
 Package: PythonInR
 Title: Use 'Python' from Within 'R'
-Version: 0.1-9
+Version: 0.1-11
 Authors@R: c( person("Florian", "Schwendinger", role = c("aut", "cre"), 
                      email = "FlorianSchwendinger@gmx.at"),
               person("Kimyen", "Truong", role = "ctb") )
@@ -16,9 +16,9 @@ BugReports: https://bitbucket.org/Floooo/pythoninr/issues
 License: GPL-3
 NeedsCompilation: yes
 RoxygenNote: 6.1.1
-Packaged: 2020-03-09 18:53:39 UTC; florian
+Packaged: 2020-03-15 09:44:29 UTC; florian
 Author: Florian Schwendinger [aut, cre],
   Kimyen Truong [ctb]
 Maintainer: Florian Schwendinger <FlorianSchwendinger@gmx.at>
 Repository: CRAN
-Date/Publication: 2020-03-10 06:50:21 UTC
+Date/Publication: 2020-03-19 05:20:08 UTC

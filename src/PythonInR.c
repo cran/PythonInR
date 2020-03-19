@@ -85,7 +85,11 @@ SEXP py_connect(SEXP initvars){
     
     Py_InitializeEx(asInteger(initvars));
     PySys_SetArgv(1, argv);
-    Py_SetProgramName(PY_V_CHAR("PythonInR")); 
+    #if PY_MAJOR_VERSION >= 3
+        Py_SetProgramName(L"PythonInR"); 
+    #else
+        Py_SetProgramName("PythonInR"); 
+    #endif
     
     PyRun_SimpleString("import sys; sys.path.append('.')");
 
