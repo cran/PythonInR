@@ -35,10 +35,12 @@ fi
 PYVERSION=`python3 -c "import sys;import distutils.sysconfig as sc;sys.stdout.write(sc.get_config_var('VERSION'))"`
 PYINCLUDE=`python3 -c "import sys;import distutils.sysconfig as sc;sys.stdout.write(sc.get_config_var('INCLUDEPY'))"`
 PYBINPATH=`python3 -c "import sys;import os;sys.stdout.write(os.path.dirname(sys.executable))"`
+PYLDLIBRARY=`python3 -c "import sys;import distutils.sysconfig as sc;sys.stdout.write(sc.get_config_var('LDLIBRARY'))"`
 # sys.version_info.major would be a alternative to hexversion
 PY3FLAG=`python3 -c 'import sys; print("%i" % (sys.hexversion<0x03000000))'`
 PYABOVE38FLAG=`python3 -c 'import sys; print("%i" % (sys.hexversion>0x03080000))'`
 PICFLAGS=`"${R_HOME}/bin/R" CMD config CXX11PICFLAGS`
+PYXY="PYTHONLIBXY="$PYLDLIBRARY""
 
 if [ $PYABOVE38FLAG -eq 1 ]; then
   echo "detected python3.8 or newer"
@@ -46,24 +48,11 @@ if [ $PYABOVE38FLAG -eq 1 ]; then
   PYEMBEDPYCONF="--embed"
 fi
 
-#python-3.8-embed
-
 ## echo $PYVERSION
 ## echo $PYBINPATH
 ## echo $PY3FLAG
 ## echo $PICFLAGS
 ## echo ""
-
-## TODO:
-## Change the generation of PKG_LIBS so it works with conda.
-## PYLIBS="PKG_LIBS="`python -c 'import sysconfig; print(" ".join(sysconfig.get_config_var("LDSHARED").split()[1:]))'`
-if [ $PY3FLAG -eq 0 ]; then
-  echo "python version is > 3"
-  PYXY="PYTHONLIBXY=libpython"$PYVERSION"m.so"
-else
-  echo "python version is < 3"
-  PYXY="PYTHONLIBXY=libpython"$PYVERSION".so"
-fi
 
 PKG_LIBS=`$PYBINPATH/python$PYVERSION-config --ldflags $PYEMBEDPYCONF`
 

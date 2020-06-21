@@ -1,5 +1,5 @@
 0c9df7953c463761b277567bb139853f *ChangeLog
-643a3fd502ef937c41ff659626c3eb1c *DESCRIPTION
+6f59bc97465080e13d64f74c446e15e6 *DESCRIPTION
 fdf8803f84f1d032720c76c1dabdba0e *NAMESPACE
 8f23ca90a540abd478e8eae1d9f7ca1a *R/AutodetectPython.R
 37aab45a28757b4fd42d86ca69f2a817 *R/Basics.R
@@ -22,7 +22,7 @@ e9b54a51e96a787b28ad51f94e03c898 *R/Utility.R
 b8313baf3d27ccdb477556c07b37f2b1 *R/zzz.R
 873763a1e1dc563e392f21866860a148 *README.md
 75a78cb0c1fa53ba6696b487f37ef4c2 *cleanup
-95bd57b671bbe3e74567afcceaef2f29 *configure
+45db16dbc634d848f20013e2ea022a41 *configure
 70031f25497e1421e156bd2d5316fc9e *inst/testing/Basics.R
 aa867dd99ecb0cddd42f1af8d31e592c *inst/testing/NA_NaN_Inf.R
 a4f40b6366bc25896b02d8c2a13fff19 *inst/testing/PyAttach.R
